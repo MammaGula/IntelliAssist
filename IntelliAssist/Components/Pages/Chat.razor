@@ -1,0 +1,77 @@
+﻿@page "/chat"
+@using IntelliAssist.Interfaces
+@inject IAiService AiService
+
+<h3>AI Chat</h3>
+
+@* Text Area *@
+<div class="mb-3">
+    <label class="form-label">Your message</label>
+    <textarea class="form-control" @bind="userMessage" rows="3"></textarea>
+</div>
+
+<button class="btn btn-primary" @onclick="SendMessage" disabled="@isLoading">
+    @if (isLoading)
+    {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+    }
+    Send
+</button>
+
+@* Loading indicator *@
+@if (isLoading)
+{
+    <div class="mt-2">
+        <span class="text-muted">AI is thinking...</span>
+    </div>
+}
+
+@* Response from AI: if ai response is not null > show messageBox *@
+@if (!string.IsNullOrWhiteSpace(aiResponse))
+{
+    <div class="alert alert-secondary mt-3">
+        <strong>AI Response:</strong>
+        <p>@aiResponse</p>
+    </div>
+}
+
+@* Error message *@
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger mt-3">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
+@code {
+
+    private string userMessage = ""; // Message from the user
+    private string aiResponse = "";  // Response from the AI
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    private async Task SendMessage()
+    {
+        // Check if user message is empty
+        if (string.IsNullOrWhiteSpace(userMessage))
+            return;
+
+        isLoading = true;
+        aiResponse = "";
+        errorMessage = "";
+
+        try
+        {
+            // Call AiService directly instead of using HTTP
+            aiResponse = await AiService.AskAsync(userMessage);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

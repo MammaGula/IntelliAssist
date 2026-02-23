@@ -1,0 +1,85 @@
+﻿@page "/recommendation"
+@using IntelliAssist.Interfaces
+@using IntelliAssist.DTOs
+@inject IRecommendationService RecommendationService
+
+<h3>Movie Recommendations</h3>
+
+<p>This page analyzes your movie history and generates personalized recommendations using AI.</p>
+
+<button class="btn btn-primary" @onclick="GetRecommendations">Get Recommendations</button>
+
+@* Loading Spinner : To show Spinner to tell user while AI is loading*@
+
+@if (isLoading)
+{
+    <div class="mt-3">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="ms-2">Analyzing your movie history...</span>
+    </div>
+}
+
+@* Show the result from AI *@
+@if (!string.IsNullOrWhiteSpace(result))
+{
+    <div class="alert alert-secondary mt-3">
+        <strong>AI Recommendations:</strong>
+        <pre>@result</pre> 
+        <!-- Use <pre> to preserve formatting from AI response -->
+
+        @if (movieCount > 0)
+        {
+            <div class="mt-2">
+                <small class="text-muted">
+                    Based on @movieCount movies | Generated at @generatedAt.ToLocalTime().ToString("g")
+                </small>
+            </div>
+        }
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger mt-3">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
+
+@code {
+    private string result = "";
+    private string errorMessage = "";
+    private bool isLoading = false;
+    private int movieCount = 0;
+    private DateTime generatedAt;
+
+    private async Task GetRecommendations()
+    {
+        isLoading = true;
+        result = "";
+        errorMessage = "";
+
+        try
+        {
+            // Call the RecommendationService to get movie recommendations from AI
+            var response = await RecommendationService.GetMovieRecommendationsAsync();
+
+            result = response.Recommendations;
+            movieCount = response.MovieCount;
+            generatedAt = response.GeneratedAt;
+        }
+        catch (InvalidOperationException ex)
+        {
+            errorMessage = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An unexpected error occurred: {ex.Message}";
+        }
+
+        isLoading = false;
+    }
+}
+
+
+

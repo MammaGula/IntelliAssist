@@ -1,0 +1,79 @@
+﻿@page "/translate"
+@using IntelliAssist.Interfaces
+@inject IAiService AiService
+
+<h3>Translate to Swedish</h3>
+
+<div class="mb-3">
+    <label class="form-label">Enter a sentence to translate</label>
+    <textarea class="form-control" @bind="inputSentence" rows="3"></textarea>
+</div>
+
+<button class="btn btn-primary" @onclick="TranslateSentence" disabled="@isLoading">
+    @if (isLoading)
+    {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+    }
+    Translate
+</button>
+
+@* Loading indicator *@
+@if (isLoading)
+{
+    <div class="mt-2">
+        <span class="text-muted">Translating...</span>
+    </div>
+}
+
+@* Show the result from AI *@
+@if (!string.IsNullOrWhiteSpace(translatedText))
+{
+    <div class="alert alert-success mt-3">
+        <strong>Translation:</strong>
+        <p>@translatedText</p>
+    </div>
+}
+
+@* Error message *@
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger mt-3">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
+
+
+@code {
+    private string inputSentence = "";
+    private string translatedText = "";
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    private async Task TranslateSentence()
+    {
+        if (string.IsNullOrWhiteSpace(inputSentence))
+            return;
+
+        isLoading = true;
+        translatedText = "";
+        errorMessage = "";
+
+        try
+        {
+            // Create prompt for translation
+            var prompt = $"Translate this sentence to Swedish: {inputSentence}";
+
+            // Call AiService directly instead of using HTTP
+            translatedText = await AiService.AskAsync(prompt);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

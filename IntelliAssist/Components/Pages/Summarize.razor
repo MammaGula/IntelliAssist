@@ -1,0 +1,85 @@
+﻿@page "/summarize"
+@using IntelliAssist.Interfaces
+@inject IAiService AiService
+
+<h3>Summarize Text</h3>
+
+<div class="mb-3">
+    <label class="form-label">Enter text to summarize</label>
+    <textarea class="form-control" @bind="inputText" rows="8"></textarea>
+</div>
+
+<button class="btn btn-primary" @onclick="SummarizeText" disabled="@isLoading">
+    @if (isLoading)
+    {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+    }
+    Summarize
+</button>
+
+@* Loading indicator *@
+@if (isLoading)
+{
+    <div class="mt-2">
+        <span class="text-muted">Summarizing...</span>
+    </div>
+}
+
+@*  
+Show a summary from AI 
+*@
+@if (!string.IsNullOrWhiteSpace(summary))
+{
+    <div class="alert alert-info mt-3">
+        <strong>Summary:</strong>
+        <p>@summary</p>
+    </div>
+}
+
+@* Error message *@
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger mt-3">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
+@code {
+    private string inputText = "";
+    private string summary = ""; // Summary from the AI
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    private async Task SummarizeText()
+    {
+        // Check if user already entered some text
+        if (string.IsNullOrWhiteSpace(inputText))
+            return;
+
+        isLoading = true;
+        summary = "";
+        errorMessage = "";
+
+        try
+        {
+            // Create prompt for summarization
+            var prompt = $"Summarize the following text:\n\n{inputText}";
+
+            // Call AiService directly instead of using HTTP
+            summary = await AiService.AskAsync(prompt);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
+
+@* 1. User can enter a long text in the textarea.
+2. When the "Summarize" button is clicked, the SummarizeText method
+3. calls the AI service directly to summarize the text.
+*@
