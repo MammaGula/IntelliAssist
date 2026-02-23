@@ -1,4 +1,7 @@
+using IntelliAssist;
 using IntelliAssist.Components;
+using IntelliAssist.Interfaces;
+using IntelliAssist.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,20 @@ builder.Services.AddRazorComponents()
 // Add DbContext 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+// Register HttpClient for AI Service
+builder.Services.AddHttpClient<IAiService, AiService>();
+
+// Register Repositories
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+// Register Application Services
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+
+
+
+
 
 var app = builder.Build();
 
