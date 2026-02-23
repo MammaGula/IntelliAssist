@@ -1,6 +1,6 @@
-using Ai_Lab.DTOs;
+using IntelliAssist.DTOs;
 
-namespace Ai_Lab.Interfaces;
+namespace IntelliAssist.Interfaces;
 
 /// <summary>
 /// Service interface for generating movie recommendations

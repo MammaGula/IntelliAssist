@@ -1,16 +1,12 @@
-using Ai_Lab.Models;
+using IntelliAssist.Models;
 
-namespace Ai_Lab.Interfaces;
+namespace IntelliAssist.Interfaces;
 
-/// <summary>
-/// Repository interface for movie-related database operations
-/// </summary>
+
+// Repository interface for movie-related database operations
+
 public interface IMovieRepository
 {
-    /// <summary>
-    /// Gets all user movies from the database
-    /// </summary>
-    /// <param name="ct">Cancellation token for async operation</param>
-    /// <returns>List of user movies</returns>
+    // Gets all user movies from the database, returning a list of UserMovie objects
     Task<List<UserMovie>> GetUserMoviesAsync(CancellationToken ct = default);
 }
