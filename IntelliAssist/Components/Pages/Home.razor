@@ -2,6 +2,45 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div style="padding:1.75rem; border-radius:14px; background:linear-gradient(135deg,#dff7ec 0%,#e7f0ff 100%); color:#0b1220; margin-bottom:1rem; box-shadow:0 8px 24px rgba(11,18,32,0.04);">
+    <h1 style="margin:0 0 0.25rem 0;">IntelliAssist ✨</h1>
+    <p style="margin:0; opacity:0.95">AI-powered utilities to chat, translate, summarize and get personalized movie recommendations.</p>
+</div>
 
-Welcome to your new app.
+<div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-start;">
+    <div style="flex:1 1 220px; padding:1rem; border-radius:16px; background:linear-gradient(180deg,#fff6ec 0%,#fff2e6 100%); box-shadow:0 8px 24px rgba(11,18,32,0.04); display:flex; flex-direction:column; justify-content:space-between; min-height:220px;">
+        <div>
+            <h3 style="margin-top:0">💬 Chat</h3>
+            <p style="margin:0 0 .75rem 0">Ask or chat with the AI to get answers or ideas.</p>
+        </div>
+        <NavLink class="btn btn-primary" href="/chat">Open Chat</NavLink>
+    </div>
+
+    <div style="flex:1 1 220px; padding:1rem; border-radius:16px; background:linear-gradient(180deg,#eaf9ff 0%,#e6f4ff 100%); box-shadow:0 8px 24px rgba(11,18,32,0.04); display:flex; flex-direction:column; justify-content:space-between; min-height:220px;">
+        <div>
+            <h3 style="margin-top:0">🔤 Translate</h3>
+            <p style="margin:0 0 .75rem 0">Quickly translate text between languages.</p>
+        </div>
+        <NavLink class="btn btn-primary" href="/translate">Open Translate</NavLink>
+    </div>
+
+    <div style="flex:1 1 220px; padding:1rem; border-radius:16px; background:linear-gradient(180deg,#f7f5ff 0%,#eef0ff 100%); box-shadow:0 8px 24px rgba(11,18,32,0.04); display:flex; flex-direction:column; justify-content:space-between; min-height:220px;">
+        <div>
+            <h3 style="margin-top:0">📝 Summarize</h3>
+            <p style="margin:0 0 .75rem 0">Summarize long content into a short, easy-to-read summary.</p>
+        </div>
+        <NavLink class="btn btn-primary" href="/summarize">Open Summarizer</NavLink>
+    </div>
+
+    <div style="flex:1 1 220px; padding:1rem; border-radius:16px; background:linear-gradient(180deg,#f6fff6 0%,#f0fff2 100%); box-shadow:0 8px 24px rgba(11,18,32,0.04); display:flex; flex-direction:column; justify-content:space-between; min-height:220px;">
+        <div>
+            <h3 style="margin-top:0">🎬 Recommendation</h3>
+            <p style="margin:0 0 .75rem 0">Get movie recommendations based on your watch history.</p>
+        </div>
+        <NavLink class="btn btn-primary" href="/recommendation">Open Recommendations</NavLink>
+    </div>
+</div>
+
+<footer style="margin-top:1.25rem; color:rgba(11,18,32,0.7); font-size:0.95rem;">
+    <p style="margin:0">Get started from the menu or the buttons above ✨</p>
+</footer>
